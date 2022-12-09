@@ -1,0 +1,27 @@
+@Configuration
+public class WebSecurityConfig  {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http
+                .httpBasic()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET,"/").hasAnyRole("USER")
+                .requestMatchers(HttpMethod.POST,"/cadastrarUsuario").permitAll()
+                .requestMatchers(HttpMethod.POST,"/cadastrarRole").permitAll()
+                // .requestMatchers(HttpMethod.GET,"/cadastrarUsuario").hasRole("USER");
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
+                return http.build();
+
+
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+}
